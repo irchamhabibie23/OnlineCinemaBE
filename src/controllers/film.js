@@ -79,8 +79,8 @@ exports.readFilms = async (req, res) => {
     films = parseJSON.map((item) => {
       return {
         ...item,
-        thumbnail: path + item.thumbnail,
-        backdrop: path + item.backdrop,
+        thumbnail: item.thumbnail,
+        backdrop: item.backdrop,
       }
     })
 
