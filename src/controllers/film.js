@@ -79,8 +79,8 @@ exports.readFilms = async (req, res) => {
     films = parseJSON.map((item) => {
       return {
         ...item,
-        thumbnail: item.thumbnail,
-        backdrop: item.backdrop,
+        thumbnail: path + item.thumbnail,
+        backdrop: path + item.backdrop,
       }
     })
 
@@ -95,6 +95,7 @@ exports.readFilms = async (req, res) => {
     res.status(500).send({
       status: "failed",
       message: "server error",
+      error,
     })
   }
 }
