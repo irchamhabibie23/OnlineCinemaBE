@@ -67,7 +67,7 @@ exports.readFilms = async (req, res) => {
         [
           literal(`(
             SELECT "Categories".name FROM "Categories"
-            WHERE "Categories".id = "Film".CategoryId
+            WHERE "Categories".id = "Films".CategoryId
           )`),
           "category",
         ],
