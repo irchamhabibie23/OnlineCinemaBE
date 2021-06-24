@@ -303,7 +303,7 @@ exports.getProfile = async (req, res) => {
               literal(`(
               SELECT title FROM "Films"
               JOIN "PurchaseLists"
-              ON "Films".id="PurchaseLists"."FilmId"
+              ON "Films".id="purchasedFilms"."FilmId"
             )`),
               "film",
             ],
@@ -311,7 +311,7 @@ exports.getProfile = async (req, res) => {
               literal(`(
               SELECT price FROM "Films"
               JOIN "PurchaseLists"
-              ON "Films".id="PurchaseLists"."FilmId"
+              ON "Films".id="purchasedFilms"."FilmId"
             )`),
               "price",
             ],
