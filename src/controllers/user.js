@@ -301,29 +301,28 @@ exports.getProfile = async (req, res) => {
             "id",
             [
               literal(`(
-              SELECT Films.title FROM Films
-              WHERE purchasedFilms.FilmId=Films.id
+              SELECT title FROM "Films"
+              JOIN "PurchaseLists"
+              ON "Films".id="PurchaseLists"."FilmId"
             )`),
               "film",
             ],
             [
               literal(`(
-              SELECT Films.price FROM Films
-              WHERE purchasedFilms.FilmId=Films.id
+              SELECT price FROM "Films"
+              JOIN "PurchaseLists"
+              ON "Films".id="PurchaseLists"."FilmId"
             )`),
               "price",
             ],
             "status",
             "accountNumber",
             "transferProof",
-
             [
-              sequelize.fn(
-                "date_format",
-                sequelize.col("purchasedFilms.updatedAt"),
-                "%W, %d %M %Y"
-              ),
-              "orderedAt",
+              literal(`(
+            SELECT to_char("updatedAt", 'Day Month DD YYYY') FROM "PurchaseLists"
+          )`),
+              "orderedDate",
             ],
           ],
         },
@@ -383,29 +382,28 @@ exports.getMyFilms = async (req, res) => {
             "FilmId",
             [
               literal(`(
-              SELECT Films.title FROM Films
-              WHERE purchasedFilms.FilmId=Films.id
+              SELECT title FROM "Films"
+              JOIN "PurchaseLists"
+              ON "PurchaseLists"."FilmId"="Films"."id"
             )`),
               "film",
             ],
             [
               literal(`(
-              SELECT Films.thumbnail FROM Films
-              WHERE purchasedFilms.FilmId=Films.id
+              SELECT thumbnail FROM "Films"
+              JOIN "PurchaseLists"
+              ON "PurchaseLists"."FilmId"="Films"."id"
             )`),
               "thumbnail",
             ],
             "status",
             "accountNumber",
             "transferProof",
-
             [
-              sequelize.fn(
-                "date_format",
-                sequelize.col("purchasedFilms.updatedAt"),
-                "%W, %d %M %Y"
-              ),
-              "orderedAt",
+              literal(`(
+            SELECT to_char("updatedAt", 'Day Month DD YYYY') FROM "PurchaseLists"
+          )`),
+              "orderedDate",
             ],
           ],
         },

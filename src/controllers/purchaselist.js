@@ -173,8 +173,8 @@ exports.readUserPurchaseList = async (req, res) => {
             "title",
             [
               literal(`(
-            SELECT Categories.name FROM Categories
-            WHERE Categories.id=Film.CategoryId
+            SELECT name FROM "Categories"
+            WHERE id="CategoryId"
           )`),
               "category",
             ],
@@ -198,13 +198,10 @@ exports.readUserPurchaseList = async (req, res) => {
         "status",
         "accountNumber",
         "transferProof",
-
         [
-          sequelize.fn(
-            "date_format",
-            sequelize.col("PurchaseList.updatedAt"),
-            "%W, %d %M %Y"
-          ),
+          literal(`(
+            SELECT to_char("updatedAt", 'Day Month DD YYYY') FROM "PurchaseLists"
+          )`),
           "orderedDate",
         ],
       ],

@@ -66,8 +66,8 @@ exports.readFilms = async (req, res) => {
         "backdrop",
         [
           literal(`(
-            SELECT "Categories".name FROM "Categories"
-            WHERE "Categories".id = "Films".CategoryId
+            SELECT name FROM "Categories"
+            WHERE id = "CategoryId"
           )`),
           "category",
         ],
@@ -111,8 +111,8 @@ exports.readDetailFilm = async (req, res) => {
 
           attributes: [
             literal(`(
-              SELECT Categories.name FROM Categories
-              WHERE film.CategoryId = Categories.Id
+              SELECT name FROM "Categories"
+              WHERE "CategoryId" = id
             )`),
             "name",
           ],
