@@ -51,6 +51,7 @@ const handleTransaction = async (status, transactionId) => {
   )
   console.log(status, transactionId)
 }
+
 const coreApi = new midTransClient.CoreApi({
   isProduction: false,
   serverKey: MIDTRANS_SERVER_KEY,
@@ -199,10 +200,12 @@ exports.readUserPurchaseList = async (req, res) => {
         "accountNumber",
         "transferProof",
         [
-          literal(`(
-            SELECT to_char("updatedAt", 'Day Month DD YYYY') FROM "PurchaseLists"
-          )`),
-          "orderedDate",
+          sequelize.fn(
+            "to_char",
+            sequelize.col("PurchaseList.updatedAt"),
+            "Day, Month DD YYYY"
+          ),
+          "orderedAt",
         ],
       ],
     })

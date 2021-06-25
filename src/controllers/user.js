@@ -302,16 +302,14 @@ exports.getProfile = async (req, res) => {
             [
               literal(`(
               SELECT title FROM "Films"
-              JOIN "PurchaseLists"
-              ON "Films".id="purchasedFilms"."FilmId"
+              WHERE id="FilmId"
             )`),
               "film",
             ],
             [
               literal(`(
               SELECT price FROM "Films"
-              JOIN "PurchaseLists"
-              ON "Films".id="purchasedFilms"."FilmId"
+              WHERE id="FilmId"
             )`),
               "price",
             ],
@@ -319,9 +317,11 @@ exports.getProfile = async (req, res) => {
             "accountNumber",
             "transferProof",
             [
-              literal(`(
-            SELECT to_char("updatedAt", 'Day Month DD YYYY') FROM "PurchaseLists"
-          )`),
+              sequelize.fn(
+                "to_char",
+                sequelize.col("purchasedFilms.updatedAt"),
+                "Day, Month DD YYYY"
+              ),
               "orderedDate",
             ],
           ],
@@ -383,16 +383,14 @@ exports.getMyFilms = async (req, res) => {
             [
               literal(`(
               SELECT title FROM "Films"
-              JOIN "PurchaseLists"
-              ON "PurchaseLists"."FilmId"="Films"."id"
+              WHERE id="FilmId"
             )`),
               "film",
             ],
             [
               literal(`(
               SELECT thumbnail FROM "Films"
-              JOIN "PurchaseLists"
-              ON "PurchaseLists"."FilmId"="Films"."id"
+              WHERE id="FilmId"
             )`),
               "thumbnail",
             ],
@@ -400,10 +398,12 @@ exports.getMyFilms = async (req, res) => {
             "accountNumber",
             "transferProof",
             [
-              literal(`(
-            SELECT to_char("updatedAt", 'Day Month DD YYYY') FROM "PurchaseLists"
-          )`),
-              "orderedDate",
+              sequelize.fn(
+                "to_char",
+                sequelize.col("purchasedFilms.updatedAt"),
+                "Day, Month DD YYYY"
+              ),
+              "orderedAt",
             ],
           ],
         },
