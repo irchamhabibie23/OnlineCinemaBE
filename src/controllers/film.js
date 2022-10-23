@@ -1,7 +1,7 @@
 const { Film, Category } = require("../../models")
 const { literal } = require("sequelize")
 const path = process.env.FILE_PATH
-
+var getIP = require('ipware')().get_ip;
 exports.createFilm = async (req, res) => {
   try {
     const id = JSON.parse(req.userId)
@@ -56,46 +56,15 @@ exports.readMyFilms = async (req, res) => {
 
 exports.readFilms = async (req, res) => {
   try {
-    let films = await Film.findAll({
-      attributes: [
-        "thumbnail",
-        "id",
-        "description",
-        "title",
-        "price",
-        "backdrop",
-        [
-          literal(`(
-            SELECT name FROM "Categories"
-            WHERE id = "CategoryId"
-          )`),
-          "category",
-        ],
-      ],
-    })
-
-    const parseJSON = JSON.parse(JSON.stringify(films))
-
-    films = parseJSON.map((item) => {
-      return {
-        ...item,
-        thumbnail: path + item.thumbnail,
-        backdrop: path + item.backdrop,
-      }
-    })
-
-    res.send({
-      status: "success",
-      data: {
-        films,
-      },
-    })
+    var ipInfo = getIP(req);
+    console.log(ipInfo);
+    res.send({})
   } catch (error) {
     console.log(error)
     res.status(500).send({
       status: "failed",
       message: "server error",
-      pesankesalahan: error,
+      pesankesalahan: res,
     })
   }
 }
